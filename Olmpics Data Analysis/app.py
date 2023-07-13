@@ -9,8 +9,10 @@ import plotly.figure_factory as ff
 df = pd.read_csv('athlete_events.csv')
 region_df = pd.read_csv('noc_regions.csv')
 
+# prepeocessing the dataset for further use
 df = preprocessor.preprocess(df,region_df)
 
+# for the sidebar where radio buttons will be shown
 st.sidebar.title("Olympics Analysis")
 st.sidebar.image('https://e7.pngegg.com/pngimages/1020/402/png-clipart-2024-summer-olympics-brand-circle-area-olympic-rings-olympics-logo-text-sport.png')
 user_menu = st.sidebar.radio(
@@ -18,6 +20,8 @@ user_menu = st.sidebar.radio(
     ('Medal Tally','Overall Analysis','Country-wise Analysis','Athlete wise Analysis')
 )
 
+
+# if medal telly is selected
 if user_menu == 'Medal Tally':
     st.sidebar.header("Medal Tally")
     years,country = helper.country_year_list(df)
@@ -36,6 +40,8 @@ if user_menu == 'Medal Tally':
         st.title(selected_country + " performance in " + str(selected_year) + " Olympics")
     st.table(medal_tally)
 
+
+# if Overall Analysis is selected
 if user_menu == 'Overall Analysis':
     editions = df['Year'].unique().shape[0] - 1
     cities = df['City'].unique().shape[0]
@@ -98,6 +104,8 @@ if user_menu == 'Overall Analysis':
     x = helper.most_successful(df,selected_sport)
     st.table(x)
 
+
+# if Country wise ananlysis is selected
 if user_menu == 'Country-wise Analysis':
 
     st.sidebar.title('Country-wise Analysis')
@@ -122,6 +130,8 @@ if user_menu == 'Country-wise Analysis':
     top10_df = helper.most_successful_countrywise(df,selected_country)
     st.table(top10_df)
 
+
+# if athlete wise anaysis is selected
 if user_menu == 'Athlete wise Analysis':
     athlete_df = df.drop_duplicates(subset=['Name', 'region'])
 
